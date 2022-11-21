@@ -1,31 +1,11 @@
 import Loader from "../Loader/Loader";
 import Table from "../Table/Table";
 import { useGetTransactions } from "../../hooks/useGetTransactions";
-import { groupTransactionsByCustomers } from "../../helpers/groupTransactionsByCustomers";
-import { groupTransactionsByMonth } from "../../helpers/groupTransactionsByMonth";
-import { calculatePoints } from "../../helpers/calculatePoints";
-import { sumPointsFromTransactions } from "../../helpers/sumPointsFromTransactions";
+import { getUserPoints } from "../../helpers/getUsertPoints";
 
 const Points = () => {
   const { transactions: allTransactions, isLoading, isEmpty } = useGetTransactions()
-
-  const transactionsWithPoints = allTransactions.map(({ amount, ...rest }) => ({
-    ...rest,
-    points: calculatePoints(amount),
-  }));
-
-  const transactionsByCustomers = groupTransactionsByCustomers(transactionsWithPoints);
-
-  const transactionsByCustomerByMonth = transactionsByCustomers.map(({ transactions, ...rest }) => ({
-    transactions: groupTransactionsByMonth(transactions),
-    ...rest,
-  }))
-
-  const customerTransactionsWithPoints = transactionsByCustomerByMonth.map(({ transactions, ...rest }) => ({
-    transactions: transactions.map(sumPointsFromTransactions),
-    ...rest
-  }));
-
+  const customerTransactionsWithPoints = getUserPoints(allTransactions);
 
   return <div>
     <h3>Points</h3>
