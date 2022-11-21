@@ -16,10 +16,8 @@ export const getUserPoints = (allTransactions) => {
     ...rest,
   }))
 
-  const customerTransactionsWithPoints = transactionsByCustomerByMonth.map(({ transactions, ...rest }) => ({
+  return transactionsByCustomerByMonth.map(({ transactions, ...rest }) => ({
     transactions: transactions.map(sumPointsFromTransactions),
     ...rest
   }));
-
-  return customerTransactionsWithPoints;
 }
